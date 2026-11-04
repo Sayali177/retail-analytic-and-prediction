@@ -28,27 +28,27 @@ st.caption("Sales insights • Demand forecasting • Customer churn analysis")
 # --------------------------------------------------
 # LOAD DATA
 # --------------------------------------------------
+
+# --------------------------------------------------
+# LOAD DATA
+# --------------------------------------------------
+
 @st.cache_data
 def load_data():
-    sales = pd.read_csv(DATA_DIR / "sales.csv", parse_dates=["date"])
-    products = pd.read_excel(DATA_DIR / "products.xlsx")
-    customers = pd.read_csv(DATA_DIR / "customers.csv")
 
-    with open(DATA_DIR / "feedback.json", "r", encoding="utf-8") as f:
+    BASE_DIR = Path(__file__).parent
+
+    sales = pd.read_csv(BASE_DIR / "sales.csv", parse_dates=["date"])
+    products = pd.read_excel(BASE_DIR / "products.xlsx")
+    customers = pd.read_csv(BASE_DIR / "customers.csv")
+
+    with open(BASE_DIR / "feedback.json", "r", encoding="utf-8") as f:
         feedback = pd.DataFrame(json.load(f))
 
     retail = sales.merge(products, on="product_id", how="left")
     retail["revenue"] = retail["units_sold"] * retail["unit_price"]
 
     return retail, products, customers, feedback
-
-
-try:
-    retail, products, customers, feedback = load_data()
-except Exception as error:
-    st.error(f"Unable to load datasets: {error}")
-    st.info("Run `python create_data.py` first.")
-    st.stop()
 
 # --------------------------------------------------
 # SIDEBAR FILTERS
