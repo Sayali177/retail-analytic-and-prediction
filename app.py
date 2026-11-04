@@ -92,5 +92,5 @@ date_range = st.sidebar.date_input(
 filtered = retail.copy()
 
 if selected_product != "All Products":
-    filtered = filtered[
+    filtered = filtered[]
         filtered["product_name"] == selected_product
